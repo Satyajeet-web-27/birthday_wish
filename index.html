@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday!</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        overflow: hidden; /* Prevent scrolling during animation */
+      }
+
+      .handwriting {
+        font-family: "Dancing Script", cursive;
+      }
+
+      /* Balloon Animations */
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(20deg);
+          opacity: 0;
+        }
+      }
+
+      .balloon {
+        position: absolute;
+        bottom: -100px;
+        width: 50px;
+        height: 70px;
+        background-color: #ff6b6b;
+        border-radius: 50%;
+        z-index: 1;
+        opacity: 0.8;
+        box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .balloon::before {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 50px;
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Card Pulse Animation */
+      @keyframes pulse-soft {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .pulse-btn {
+        animation: pulse-soft 2s infinite ease-in-out;
+      }
+
+      /* Gradient Text */
+      .gradient-text {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffe66d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        background-size: 300% 300%;
+        animation: gradient-shift 5s ease infinite;
+      }
+
+      @keyframes gradient-shift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-black text-white h-screen flex items-center justify-center relative overflow-hidden selection:bg-pink-500 selection:text-white"
+  >
+    <!-- Background Gradient Mesh -->
+    <div class="absolute inset-0 z-0 opacity-30">
+      <div
+        class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-900 via-slate-900 to-black"
+      ></div>
+      <div
+        class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-pink-600 rounded-full blur-[128px] opacity-40"
+      ></div>
+      <div
+        class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600 rounded-full blur-[128px] opacity-40"
+      ></div>
+    </div>
+
+    <!-- Intro Screen (The "Gift") -->
+    <div
+      id="intro-screen"
+      class="z-50 absolute inset-0 flex flex-col items-center justify-center bg-slate-900 transition-opacity duration-1000 p-4"
+    >
+      <div class="text-center w-full max-w-lg">
+        <div
+          class="text-5xl md:text-6xl mb-6 animate-bounce cursor-pointer"
+          onclick="startCelebration()"
+        >
+          🎁
+        </div>
+        <h1 class="text-xl md:text-2xl font-light text-slate-300 mb-8">
+          A special surprise awaits...
+        </h1>
+        <button
+          onclick="startCelebration()"
+          class="pulse-btn bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-pink-500/50 transition transform hover:-translate-y-1 text-sm md:text-base"
+        >
+          Open Gift
+        </button>
+        <p class="mt-4 text-xs text-slate-500 hidden">Tap to enable audio</p>
+      </div>
+    </div>
+
+    <!-- Main Celebration Content (Hidden Initially) -->
+    <div
+      id="main-content"
+      class="relative z-10 text-center p-4 md:p-6 opacity-0 transition-opacity duration-1000 hidden transform scale-95 w-full"
+    >
+      <div
+        class="mb-2 text-pink-400 font-bold tracking-widest uppercase text-xs md:text-sm"
+      >
+        It's your special day
+      </div>
+      <div
+        class="mb-2 text-pink-400 font-bold tracking-widest uppercase text-xs md:text-sm"
+      >
+        14 April
+      </div>
+
+      <h1
+        class="handwriting text-5xl sm:text-6xl md:text-8xl mb-4 gradient-text leading-tight"
+      >
+        Happy Birthday<br />
+        <span class="text-white block mt-2">Sweta!</span>
+      </h1>
+
+      <div
+        class="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 w-[90%] max-w-md mx-auto border border-white/10 shadow-2xl mt-6 md:mt-8"
+      >
+        <p class="text-base md:text-xl text-slate-200 leading-relaxed">
+          Wishing you a day filled with happiness and a year filled with joy.
+          May all your dreams come true!
+        </p>
+        <div class="mt-6 flex justify-center gap-4">
+          <span class="text-2xl md:text-3xl">🎂</span>
+          <span class="text-2xl md:text-3xl">🥳</span>
+          <span class="text-2xl md:text-3xl">🎈</span>
+        </div>
+      </div>
+
+      <button
+        onclick="toggleMusic()"
+        id="music-btn"
+        class="hidden mt-12 text-slate-400 hover:text-white transition text-sm flex items-center justify-center gap-2 mx-auto border border-white/20 rounded-full px-4 py-2 hover:bg-white/10"
+      >
+        <span>🔊</span> <span id="music-text">Music On</span>
+      </button>
+    </div>
+
+    <!-- Container for Balloons -->
+    <div
+      id="balloon-container"
+      class="absolute inset-0 pointer-events-none z-0 overflow-hidden"
+    ></div>
+
+    <script>
+      // --- Music Logic (Web Audio API) ---
+      // Using an oscillator means no external MP3 files to load/break.
+      let audioCtx;
+      let isPlaying = false;
+      let melodyTimeout;
+
+      const notes = {
+        G4: 392.0,
+        A4: 440.0,
+        B4: 493.88,
+        C5: 523.25,
+        D5: 587.33,
+        E5: 659.25,
+        F5: 698.46,
+        G5: 783.99,
+      };
+
+      // Happy Birthday Melody Structure: [Note, Duration (beats)]
+      const song = [
+        ["G4", 0.5],
+        ["G4", 0.5],
+        ["A4", 1],
+        ["G4", 1],
+        ["C5", 1],
+        ["B4", 2],
+        ["G4", 0.5],
+        ["G4", 0.5],
+        ["A4", 1],
+        ["G4", 1],
+        ["D5", 1],
+        ["C5", 2],
+        ["G4", 0.5],
+        ["G4", 0.5],
+        ["G5", 1],
+        ["E5", 1],
+        ["C5", 1],
+        ["B4", 1],
+        ["A4", 1],
+        ["F5", 0.5],
+        ["F5", 0.5],
+        ["E5", 1],
+        ["C5", 1],
+        ["D5", 1],
+        ["C5", 2],
+      ];
+
+      let noteIndex = 0;
+      const tempo = 1.8; // Speed adjustment
+
+      function playTone(freq, duration) {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        osc.type = "sine"; // Soft, mild tone
+        osc.frequency.value = freq;
+
+        // Envelope to make it sound gentle (Attack, Decay, Sustain, Release)
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.05); // Attack
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioCtx.currentTime + duration,
+        ); // Decay
+
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      }
+
+      function playMelody() {
+        if (!isPlaying) return;
+
+        const [noteName, beats] = song[noteIndex];
+        const duration = beats / tempo;
+
+        if (notes[noteName]) {
+          playTone(notes[noteName], duration);
+        }
+
+        noteIndex = (noteIndex + 1) % song.length;
+
+        // Wait for the next note
+        melodyTimeout = setTimeout(playMelody, duration * 1000);
+      }
+
+      function toggleMusic() {
+        if (isPlaying) {
+          isPlaying = false;
+          clearTimeout(melodyTimeout);
+          document.getElementById("music-text").innerText = "Music Off";
+          document.querySelector("#music-btn span").innerText = "🔇";
+        } else {
+          isPlaying = true;
+          noteIndex = 0; // Restart song
+          playMelody();
+          document.getElementById("music-text").innerText = "Music On";
+          document.querySelector("#music-btn span").innerText = "🔊";
+        }
+      }
+
+      // --- Visual Logic ---
+
+      function startCelebration() {
+        // 1. Initialize Audio Context (must be done on user gesture)
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        // 2. Hide Intro, Show Content
+        const intro = document.getElementById("intro-screen");
+        const main = document.getElementById("main-content");
+
+        intro.style.opacity = "0";
+        setTimeout(() => {
+          intro.style.display = "none";
+          main.classList.remove("hidden");
+          // Small delay to allow display:block to apply before opacity transition
+          setTimeout(() => {
+            main.style.opacity = "1";
+            main.style.transform = "scale(1)";
+          }, 50);
+        }, 1000);
+
+        // 3. Start Music
+        isPlaying = true;
+        playMelody();
+
+        // 4. Fire Confetti
+        fireConfetti();
+
+        // 5. Release Balloons
+        createBalloons();
+      }
+
+      function fireConfetti() {
+        // Big burst
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#FF6B6B", "#4ECDC4", "#FFE66D", "#FF9F43"],
+        });
+
+        // Continuous gentle rain for 3 seconds
+        var duration = 3000;
+        var end = Date.now() + duration;
+
+        (function frame() {
+          confetti({
+            particleCount: 3,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ["#FF6B6B", "#4ECDC4", "#FFE66D"],
+          });
+          confetti({
+            particleCount: 3,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ["#FF6B6B", "#4ECDC4", "#FFE66D"],
+          });
+
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+      }
+
+      function createBalloons() {
+        const container = document.getElementById("balloon-container");
+        const colors = ["#FF6B6B", "#4ECDC4", "#FFE66D", "#FF9F43", "#A3CB38"];
+
+        for (let i = 0; i < 20; i++) {
+          const balloon = document.createElement("div");
+          balloon.classList.add("balloon");
+
+          // Randomize balloon properties
+          const bg = colors[Math.floor(Math.random() * colors.length)];
+          const left = Math.floor(Math.random() * 100) + "vw";
+          const animDuration = Math.random() * 5 + 10 + "s"; // 10-15s duration
+          const delay = Math.random() * 5 + "s";
+
+          balloon.style.backgroundColor = bg;
+          balloon.style.left = left;
+          balloon.style.animation = `float ${animDuration} linear ${delay} infinite`;
+
+          container.appendChild(balloon);
+        }
+      }
+    </script>
+  </body>
+</html>
